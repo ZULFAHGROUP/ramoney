@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Page</title>
+</head>
+<body>
+    <nav id="navbar">
+      <a href="" class="nav-brand">App</a>
+      <ul>
+        <li class="nav-item"><a href="about.html">About us</a></li>
+        <li><a href="" class="nav-item btn btn-default">Register</a></li>
+      </ul>
+    </nav>
+
+    <div class="container" id="main">
+        <h1>Welcome to Ramoney</h1>
+
+
+        <form id="conversion-form" novalidate>
+            <label for="amount">Amount(in naira)</label>
+            <input id="amount" type="text" placeholder="Enter your amount">
+            <br />
+            <label for="amount">Amount(in dollar)</label>
+            <input id="coverted-amount" type="text" readonly /> 
+            <div>
+               <input type="submit" value="Convert" id="convert-button" class="btn btn-default">
+            </div>
+
+            <p id="src"></p>
+        </form>
+    </div>
+
+    <footer id="footer-wrapper">
+        <a href="about.html" target="_blank">About us</a>
+        <a href="contact.html" target="_blank">Contact us</a>
+    </footer>
+
+    <script>
+        const convertButton = document.querySelector('#conversion-form');
+        // convertButton.addEventListener('submit', (e) => {
+        //     e.preventDefault();
+        //     const inputtedAmount = document.querySelector('#amount').value;
+        //     const convertedAmount = nairaToDollarConversion(inputtedAmount);
+        //     document.querySelector('#coverted-amount').value = convertedAmount === ""? "-" : `$${convertedAmount}`;
+        // })
+
+        convertButton.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const inputtedAmount = document.querySelector('#amount').value;
+            if(isNaN(inputtedAmount) || inputtedAmount === '' || inputtedAmount < 0) {
+                alert('Please enter a valid number');
+                return "";
+            }
+            fetch('https://api.exchangerate-api.com/v4/latest/USD')
+            .then(response => response.json())
+            .then(data => {
+                const dollarRate = data.rates.NGN;
+                const convertedAmount = Number(inputtedAmount) / dollarRate;
+                document.querySelector('#coverted-amount').value = convertedAmount.toFixed(2)
+                document.querySelector('#src').textContent = `1 USD = ${dollarRate} NGN`
+            })
+            .catch(error => {
+                alert("errro ")
+                console.log(error);
+            })
+        
+
+
+
+          //  document.querySelector('#coverted-amount').value = convertedAmount === ""? "-" : `$${convertedAmount}`;
+        })
+
+   
+
+   
+        // document.querySelector('#amount').addEventListener('keyup', (e) => {
+        //     const amountField = document.querySelector('#amount').value
+        //     const convertedAmount = nairaToDollarConversion(amountField);
+        //     document.querySelector('#coverted-amount').value = convertedAmount === ""? "-" : `$${convertedAmount}`;
+        // })
+
+
+        const nairaToDollarConversion = (amount) => {
+            if(isNaN(amount) || amount === '' || amount < 0) {
+                alert('Please enter a valid number');
+                return "";
+            }
+            const DOLLAR_RATE = 500;
+            return Number(amount) / DOLLAR_RATE;
+        }
+
+
+
+
+
+
+       
+
+        
+    </script>
+</body>
+</html>
