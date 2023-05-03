@@ -1,4 +1,4 @@
-The amazing app can convert your dollars to naira
+The amazing app can convert your naira to dollar
 
 use link below to access it 
 
